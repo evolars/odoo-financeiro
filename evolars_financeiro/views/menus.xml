@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Para quem tem "Recursos completos de contabilidade" (account.group_account_user). -->
+    <menuitem
+        id="menu_financeiro_root"
+        name="Financeiro"
+        web_icon="evolars_financeiro,static/description/icon.png"
+        groups="account.group_account_user"
+        sequence="45"
+    />
+
+    <menuitem id="menu_contas_receber" name="A receber" parent="menu_financeiro_root" action="action_contas_receber" sequence="10" />
+    <menuitem id="menu_contas_pagar" name="A pagar" parent="menu_financeiro_root" action="action_contas_pagar" sequence="20" />
+    <menuitem id="menu_vencimentos" name="Vencimentos" parent="menu_financeiro_root" action="action_vencimentos" sequence="30" />
+    <menuitem id="menu_bancos" name="Bancos" parent="menu_financeiro_root" action="action_bancos" sequence="40" />
+
+    <menuitem id="menu_relatorios" name="Relatórios" parent="menu_financeiro_root" sequence="50" />
+    <menuitem id="menu_fluxo_caixa" name="Fluxo de caixa" parent="menu_relatorios" action="action_fluxo_caixa" sequence="10" />
+    <menuitem id="menu_dre_mensal" name="DRE do mês" parent="menu_relatorios" action="action_dre_mensal" sequence="20" />
+    <menuitem id="menu_dre_exercicio" name="DRE do ano" parent="menu_relatorios" action="action_dre_exercicio" sequence="30" />
+    <menuitem id="menu_balanco" name="Balanço" parent="menu_relatorios" action="action_balanco" sequence="40" />
+    <menuitem id="menu_contas_aberto" name="Contas em aberto" parent="menu_relatorios" action="account_financial_report.action_open_items_wizard" sequence="50" />
+    <menuitem id="menu_aging" name="Atrasos por cliente e fornecedor" parent="menu_relatorios" action="account_financial_report.action_aged_partner_balance_wizard" sequence="60" />
+    <menuitem id="menu_razao" name="Razão" parent="menu_relatorios" action="account_financial_report.action_general_ledger_wizard" sequence="70" />
+
+    <menuitem id="menu_config" name="Configuração" parent="menu_financeiro_root" sequence="90" />
+    <menuitem id="menu_categorias" name="Categorias" parent="menu_config" action="action_categorias" sequence="10" />
+    <menuitem id="menu_previsoes" name="Previsões de caixa" parent="menu_config" action="mis_builder_cash_flow.action_mis_cash_flow_forecast_line" sequence="20" />
+    <menuitem id="menu_diarios" name="Contas bancárias e diários" parent="menu_config" action="account.action_account_journal_form" sequence="30" />
+    <menuitem id="menu_condicoes" name="Condições de pagamento" parent="menu_config" action="account.action_payment_term_form" sequence="40" />
+</odoo>

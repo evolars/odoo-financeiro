@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Vencimentos (account_due_list): uma linha por parcela, entradas e saídas
+         juntas, como a planilha do financeiro. -->
+    <record id="view_payments_tree_financeiro" model="ir.ui.view">
+        <field name="name">account.move.line.due.evolars.financeiro</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account_due_list.view_payments_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="evolars_category_id" optional="show" options="{'no_open': True}" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_payments_filter_financeiro" model="ir.ui.view">
+        <field name="name">account.move.line.due.search.evolars.financeiro</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account_due_list.view_payments_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="evolars_category_id" />
+                <group>
+                    <filter
+                        string="Categoria"
+                        name="groupby_evolars_category"
+                        context="{'group_by': 'evolars_category_id'}"
+                    />
+                    <filter
+                        string="Mês do vencimento"
+                        name="groupby_maturity_month"
+                        context="{'group_by': 'date_maturity:month'}"
+                    />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

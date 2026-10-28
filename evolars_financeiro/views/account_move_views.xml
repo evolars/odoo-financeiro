@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Lista das contas a pagar e a receber do app Financeiro: a mesma lista do
+         Odoo, ordenada pelo vencimento e com a categoria ao lado do parceiro. -->
+    <record id="view_move_tree_financeiro" model="ir.ui.view">
+        <field name="name">account.move.list.evolars.financeiro</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree" />
+        <field name="mode">primary</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="default_order">invoice_date_due asc, id desc</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_date_due']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='invoice_date']" position="before">
+                <field name="evolars_category_id" optional="show" options="{'no_open': True}" />
+            </xpath>
+            <xpath expr="//field[@name='amount_residual_signed']" position="attributes">
+                <attribute name="optional">show</attribute>
+                <attribute name="string">Em aberto</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount_untaxed_in_currency_signed']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_invoice_filter_financeiro" model="ir.ui.view">
+        <field name="name">account.move.search.evolars.financeiro</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="evolars_category_id" />
+            </xpath>
+            <!-- O filtro nativo "open" se chama "A pagar" mesmo nas contas a
+                 receber; este é o mesmo domínio com um nome que serve aos dois. -->
+            <xpath expr="//filter[@name='open']" position="before">
+                <filter
+                    string="Em aberto"
+                    name="evolars_em_aberto"
+                    domain="[('state', '!=', 'cancel'), ('payment_state', 'in', ('not_paid', 'partial')), ('move_type', '!=', 'entry')]"
+                />
+            </xpath>
+            <xpath expr="//filter[@name='duedate']" position="after">
+                <filter
+                    string="Categoria"
+                    name="groupby_evolars_category"
+                    context="{'group_by': 'evolars_category_id'}"
+                />
+                <filter
+                    string="Mês do vencimento"
+                    name="groupby_due_month"
+                    context="{'group_by': 'invoice_date_due:month'}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
